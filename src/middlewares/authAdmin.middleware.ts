@@ -2,23 +2,23 @@ import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
 import { Response, Request } from "express";
 import { environment } from "../config/environment";
-import { User } from "../entity/user.entity";
 
-export interface IContext {
+export interface IContextAdmin {
   req: Request;
   res: Response;
-  payload: { userId: string };
+  payload: { adminId: string };
 }
 
-export const isAuth: MiddlewareFn<IContext> = ({ context }, next) => {
+export const adminIsAuth: MiddlewareFn<IContextAdmin> = ({ context }, next) => {
   try {
-    const bearerToken = context.req.headers["authorization"];
-    if (!bearerToken) {
+    const bearerAdminToken = context.req.headers["authorization"];
+
+    if (!bearerAdminToken) {
       throw new Error("Unauthorized");
     }
 
-    const jwt = bearerToken.split(" ")[1];
-    const payload = verify(jwt, environment.JWT_SECRET);
+    const jwt = bearerAdminToken.split(" ")[1];
+    const payload = verify(jwt, environment.JWTADMIN_SECRET);
     context.payload = payload as any;
   } catch (e) {
     throw new Error(e);
