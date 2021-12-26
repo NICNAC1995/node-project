@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  Timestamp,
 } from "typeorm";
 
 import { Author } from "./author.entity";
@@ -35,4 +36,8 @@ export class Book {
   @Field(() => Number, { nullable: true })
   @Column({ type: Number, nullable: true })
   userId!: number;
+
+  @Field()
+  @Column({ nullable: true })
+  loanedAt!: Date;
 }

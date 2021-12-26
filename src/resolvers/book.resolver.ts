@@ -1,3 +1,4 @@
+const nodemailer = require("nodemailer");
 import {
   Mutation,
   Resolver,
@@ -8,12 +9,18 @@ import {
   UseMiddleware,
   Ctx,
 } from "type-graphql";
-import { getRepository, RemoveOptions, Repository } from "typeorm";
+import {
+  getConnectionManager,
+  getRepository,
+  RemoveOptions,
+  Repository,
+} from "typeorm";
 import { Author } from "../entity/author.entity";
 import { Book } from "../entity/book.entity";
 import { Length } from "class-validator";
 import { IContext, isAuth } from "../middlewares/auth.middleware";
 import { User } from "../entity/user.entity";
+import { adminIsAuth } from "../middlewares/authAdmin.middleware";
 
 @InputType()
 class BookInput {
@@ -112,7 +119,7 @@ export class BookResolver {
   }
 
   @Query(() => [Book])
-  @UseMiddleware(isAuth)
+  @UseMiddleware(adminIsAuth)
   async getAllBooks(): Promise<Book[]> {
     try {
       return await this.bookRepository.find({
@@ -227,6 +234,11 @@ export class BookResolver {
       await this.bookRepository.update(bookId.id, {
         userId: conectedUserIdParsed,
       });
+      const currentDate = new Date();
+      // const parsedCurrentDate = currentDate.toString();
+      const loanedAtDate = await this.bookRepository.update(bookId.id, {
+        loanedAt: currentDate,
+      });
       return true;
     } catch (e) {
       throw new Error(e);
@@ -238,7 +250,7 @@ export class BookResolver {
   async returnBookOnLoan(
     @Arg("input", () => BookIdInput) BookId: BookIdInput,
     @Ctx() context: IContext
-  ): Promise<Boolean> {
+  ): Promise<Boolean | string> {
     try {
       const conectedUserPayloadReturn = context.payload;
       const conectedUserPayloadValuesToReturn = Object.values(
@@ -267,7 +279,29 @@ export class BookResolver {
       await this.userRepository.update(conectedUserIdToReturn, {
         booksOnLoanQuantity: quantityOfLoeanedBooksParsed - 1,
       });
-      return true;
+      const loanedDate = await this.bookRepository.findOne(BookId.id);
+      if (loanedDate) {
+        const loanDateOk = loanedDate.loanedAt;
+        const parsedLoanDateOk = loanDateOk.getTime();
+        const currentDate1 = new Date();
+        const parsedCurrentDate1 = currentDate1.getTime();
+        if (parsedCurrentDate1 >= parsedLoanDateOk + 604800000) {
+          const message =
+            "You must pay a fine, of 1 USD for each day of delay, as you returned the book more than a week later after you borrowed it";
+          return message;
+        } else {
+          return true;
+        }
+      }
+      // const loanDateOkParsed = loanDateOk?.parse();
+      // if (loanedDateOk) {loanedDateOk.parse()}
+      // {loanedDateOk.getTime()}
+
+      // Math.round(new Date().getTime()/10000)
+      // agregar que el userId vuelva a null o a cero
+      else {
+        return true;
+      }
     } catch (e) {
       throw new Error(e);
     }

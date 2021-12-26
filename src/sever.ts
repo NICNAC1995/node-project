@@ -24,7 +24,7 @@ export async function startServer() {
   });
 
   await apolloServer.start();
-  // esto (linea anterior) lo tuve que agregar (buscando en internet: https://stackoverflow.com/questions/68614523/error-you-must-await-server-start-before-calling-server-applymiddleware) en internete porque si no no funcionaba
+  // esto (linea anterior) lo tuve que agregar (buscando en internet: https://stackoverflow.com/questions/68614523/error-you-must-await-server-start-before-calling-server-applymiddleware) en internet porque si no no funcionaba
 
   apolloServer.applyMiddleware({ app, path: "/graphql" });
 

@@ -1,9 +1,11 @@
-const cron = require("node-cron");
-let shell = require("shelljs");
+import cron from "node-cron";
+import shell from "shelljs";
+import { sendEmailJob } from "./mailer";
 
-cron.schedule("38 19 * * mon", function () {
-  console.log("Sending email");
-  if (shell.exec("node mailer.js").code !== 0) {
-    console.log("Email sent");
-  }
-});
+export const startCron = () => {
+  console.log("Cron job running...");
+  cron.schedule("0 9 * * mon", async function () {
+    console.log("Sending email");
+    await sendEmailJob();
+  });
+};
