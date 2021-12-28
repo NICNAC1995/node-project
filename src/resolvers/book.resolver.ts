@@ -1,4 +1,3 @@
-const nodemailer = require("nodemailer");
 import {
   Mutation,
   Resolver,
@@ -57,24 +56,6 @@ class BookIdInput {
   @Field(() => Number)
   id!: number;
 }
-
-// @InputType()
-// class GetBookOnLoanInput {
-//   @Field(() => Number)
-//   id!: number;
-// }
-
-// @InputType()
-// class GetBookOnLoanInput {
-//   @Field(() => Number)
-//   id!: number;
-
-//   @Field(() => String)
-//   title!: string;
-
-//   @Field(() => Boolean)
-//   isOnLoan!: boolean;
-// }
 
 @Resolver()
 export class BookResolver {
@@ -235,7 +216,6 @@ export class BookResolver {
         userId: conectedUserIdParsed,
       });
       const currentDate = new Date();
-      // const parsedCurrentDate = currentDate.toString();
       const loanedAtDate = await this.bookRepository.update(bookId.id, {
         loanedAt: currentDate,
       });
@@ -292,14 +272,7 @@ export class BookResolver {
         } else {
           return true;
         }
-      }
-      // const loanDateOkParsed = loanDateOk?.parse();
-      // if (loanedDateOk) {loanedDateOk.parse()}
-      // {loanedDateOk.getTime()}
-
-      // Math.round(new Date().getTime()/10000)
-      // agregar que el userId vuelva a null o a cero
-      else {
+      } else {
         return true;
       }
     } catch (e) {
@@ -337,37 +310,4 @@ export class BookResolver {
       throw new Error(e);
     }
   }
-
-  // @Mutation(() => Book)
-  // async getBookOnLoan(
-  //   @Arg("bookLoanId", () => GetBookOnLoanInput) bookLoanId: GetBookOnLoanInput
-  // ): Promise<Book | undefined | Boolean> {
-  //   const bookExists = await this.bookRepository.findOne(bookLoanId.id);
-
-  //   if (!bookExists) {
-  //     throw new Error("Book does not exist");
-  //   }
-
-  //   const successfulLoeanedBook = await this.bookRepository.save({
-  //     id: bookLoanId.id,
-  //     title: bookLoanId.title,
-  //     isOnLoan: bookLoanId.isOnLoan,
-  //   });
-  //   return await this.bookRepository.findOne(successfulLoeanedBook.id);
-  // }
-
-  // @Mutation(() => Book)
-  // async getBookOnLoan(
-  //   @Arg("bookLoanId", () => GetBookOnLoanInput) bookLoanId: GetBookOnLoanInput
-  // ): Promise<Book | null> {
-  //   const bookExists = await this.bookRepository.findOne(bookLoanId.id);
-
-  //   if (!bookExists) {
-  //     throw new Error("Book does not exist");
-  //   }
-
-  //   const loanedBook = await this.bookRepository.remove(bookExists);
-  //   return loanedBook;
-  //   // return await this.bookRepository.findOne(loanedBook.id);
-  // }
 }

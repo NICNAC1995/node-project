@@ -3,9 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  ManyToOne,
 } from "typeorm";
-import { Author } from "./author.entity";
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()

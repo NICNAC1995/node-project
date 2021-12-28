@@ -1,5 +1,4 @@
 import cron from "node-cron";
-import shell from "shelljs";
 import { sendEmailJob } from "./mailer";
 
 export const startCron = () => {

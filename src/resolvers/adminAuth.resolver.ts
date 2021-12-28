@@ -65,7 +65,7 @@ export class AdminAuthResolver {
       const adminExists = await this.adminRepository.findOne({
         where: { email },
       });
-      //   buscar si hay alguna funcionalidad parecida a findOne pero para buscar cualquier mail que exista para indicar que ya existe el admin (que debería ser uno solo). De todas formas, creo que el register debería ocultarlo
+
       if (adminExists) {
         const error = new Error();
         error.message = "Email is not available";

@@ -1,12 +1,13 @@
 const nodemailer = require("nodemailer");
 import { getRepository } from "typeorm";
 import { Book } from "../entity/book.entity";
+import { environment } from "./environment";
 
 const transporter = nodemailer.createTransport({
   service: "hotmail",
   auth: {
-    user: "ncilionode@outlook.com",
-    pass: "Peterete1234",
+    user: environment.E_MAIL_USERNAME,
+    pass: environment.E_MAIL_PASSWORD,
   },
 });
 export const sendEmailJob = async () => {

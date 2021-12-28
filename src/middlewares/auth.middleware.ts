@@ -2,7 +2,6 @@ import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
 import { Response, Request } from "express";
 import { environment } from "../config/environment";
-import { User } from "../entity/user.entity";
 
 export interface IContext {
   req: Request;

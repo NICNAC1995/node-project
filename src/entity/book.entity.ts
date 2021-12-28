@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-  Timestamp,
 } from "typeorm";
 
 import { Author } from "./author.entity";

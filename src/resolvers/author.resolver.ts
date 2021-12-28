@@ -9,8 +9,6 @@ import {
 } from "type-graphql";
 import { Author } from "../entity/author.entity";
 import { getRepository, Repository } from "typeorm";
-import { create } from "domain";
-import { error } from "console";
 import { Length } from "class-validator";
 import { isAuth } from "../middlewares/auth.middleware";
 import { adminIsAuth } from "../middlewares/authAdmin.middleware";
@@ -85,7 +83,6 @@ export class AuthorResolver {
       return author;
     } catch (e) {
       throw new Error();
-      //no me deja poner el e entre los paréntesis luego de Error
     }
   }
 

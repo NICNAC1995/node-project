@@ -11,6 +11,6 @@ export const environment = {
   DB_DATABASE: process.env.DB_DATABASE,
   JWT_SECRET: process.env.JWT_SECRET || "Default",
   JWTADMIN_SECRET: process.env.JWTADMIN_SECRET || "DefaultAdmin",
-  E_MAIL_USER: process.env.E_MAIL_USERNAME,
-  E_MAIL_PASSWORD: process.env.E_MAIL_PASSWORD
+  E_MAIL_USERNAME: process.env.E_MAIL_USERNAME,
+  E_MAIL_PASSWORD: process.env.E_MAIL_PASSWORD,
 };

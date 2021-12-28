@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  ManyToOne,
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 
