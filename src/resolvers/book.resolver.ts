@@ -70,7 +70,7 @@ export class BookResolver {
   }
 
   @Mutation(() => Book)
-  @UseMiddleware(isAuth)
+  @UseMiddleware(adminIsAuth)
   async createBook(
     @Arg("input", () => BookInput) input: BookInput,
     @Ctx() context: IContext
@@ -133,6 +133,7 @@ export class BookResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(adminIsAuth)
   async updateBookById(
     @Arg("bookId", () => BookIdInput) bookId: BookIdInput,
     @Arg("input", () => BookUpdateInput) input: BookUpdateInput
@@ -146,6 +147,7 @@ export class BookResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseMiddleware(adminIsAuth)
   async deleteBook(
     @Arg("bookId", () => BookIdInput) bookId: BookIdInput
   ): Promise<Boolean> {
@@ -297,6 +299,7 @@ export class BookResolver {
   }
 
   @Query(() => [Book])
+  @UseMiddleware(adminIsAuth)
   async getBooksOnLoanReport(): Promise<Book[]> {
     try {
       const allBooks = await this.bookRepository.find({
